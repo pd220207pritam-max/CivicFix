@@ -157,13 +157,17 @@ export default function DisplayMap({
       if (userLocation) {
         const distKm = parseFloat(getDistanceFromLatLonInKm(userLocation.lat, userLocation.lng, complaint.latitude, complaint.longitude))
         const drivingTime = Math.max(1, Math.round((distKm / 30) * 60)) // ~30 km/h avg city speed
+        const hours = Math.floor(drivingTime / 60)
+        const mins = drivingTime % 60
+        const timeStr = hours > 0 ? (mins > 0 ? `${hours}h ${mins}m` : `${hours}h`) : `${mins}m`
+        
         distanceInfoHtml = `
           <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; background: #f8fafc; padding: 6px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
             <div style="display: flex; align-items: center; gap: 6px; color: #0369a1; font-weight: 700;">
               <span style="font-size: 14px;">📍</span> ${distKm} km
             </div>
             <div style="display: flex; align-items: center; gap: 6px; color: #475569; font-weight: 600;">
-              <span style="font-size: 14px;">🚗</span> ~${drivingTime} min
+              <span style="font-size: 14px;">🚗</span> ~${timeStr}
             </div>
           </div>
         `
