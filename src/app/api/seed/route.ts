@@ -17,6 +17,29 @@ const departments = [
   { name: 'Fire & Rescue', description: 'Handles fire hazards, building safety compliance', color: '#f97316' },
 ];
 
+const locations = [
+  { lat: 19.0760, lng: 72.8777, address: 'Mumbai, Maharashtra' },
+  { lat: 28.6139, lng: 77.2090, address: 'New Delhi, Delhi' },
+  { lat: 22.5726, lng: 88.3639, address: 'Kolkata, West Bengal' },
+  { lat: 13.0827, lng: 80.2707, address: 'Chennai, Tamil Nadu' },
+  { lat: 12.9716, lng: 77.5946, address: 'Bengaluru, Karnataka' },
+  { lat: 17.3850, lng: 78.4867, address: 'Hyderabad, Telangana' },
+  { lat: 23.0225, lng: 72.5714, address: 'Ahmedabad, Gujarat' },
+  { lat: 26.9124, lng: 75.7873, address: 'Jaipur, Rajasthan' },
+  { lat: 26.8467, lng: 80.9462, address: 'Lucknow, Uttar Pradesh' },
+  { lat: 23.2599, lng: 77.4126, address: 'Bhopal, Madhya Pradesh' },
+  { lat: 25.5941, lng: 85.1376, address: 'Patna, Bihar' },
+  { lat: 30.7333, lng: 76.7794, address: 'Chandigarh, Punjab' },
+  { lat: 8.5241, lng: 76.9366, address: 'Thiruvananthapuram, Kerala' },
+  { lat: 20.2961, lng: 85.8245, address: 'Bhubaneswar, Odisha' },
+  { lat: 26.1445, lng: 91.7362, address: 'Guwahati, Assam' },
+  { lat: 34.0837, lng: 74.7973, address: 'Srinagar, Jammu and Kashmir' },
+  { lat: 15.4909, lng: 73.8278, address: 'Panaji, Goa' },
+  { lat: 21.2514, lng: 81.6296, address: 'Raipur, Chhattisgarh' },
+  { lat: 23.3441, lng: 85.3096, address: 'Ranchi, Jharkhand' },
+  { lat: 30.3165, lng: 78.0322, address: 'Dehradun, Uttarakhand' },
+];
+
 const complaintData = [
   { title: 'Large pothole on main road', category: 'Pothole', description: 'A very large pothole has developed on the main road causing accidents and traffic jams. Multiple vehicles have been damaged.' },
   { title: 'Garbage overflowing from bins', category: 'Garbage', description: 'The garbage bins near the market area have been overflowing for 3 days. Residents are very concerned about hygiene.' },
