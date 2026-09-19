@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          String    @default("CITIZEN") // CITIZEN | ADMIN
+  phone         String?
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  complaints    Complaint[] @relation("UserComplaints")
+  bookmarks     Bookmark[]
+  notifications Notification[]
+  statusChanges StatusHistory[] @relation("ChangedBy")
+  adminNotes    AdminNote[]
+  loginActivities LoginActivity[]
+}
+
+model LoginActivity {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip          String?
+  city        String?
+  region      String?
+  country     String?
+  latitude    Float?
+  longitude   Float?
+  device      String?
+  browser     String?
+  loginAt     DateTime  @default(now())
+}
+
+model Department {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  description String?
+  color       String      @default("#2563eb")
+  complaints  Complaint[]
+  createdAt   DateTime    @default(now())
+}
+
+model Complaint {
+  id           String    @id @default(cuid())
+  title        String
+  description  String
+  category     String    // Pothole, Garbage, etc.
+  status       String    @default("Submitted") // Submitted | Under Review | Assigned | In Progress | Resolved | Rejected
+  latitude     Float
+  longitude    Float
+  address      String?
+  imageUrl     String?
+  isDemo       Boolean   @default(false)
+  
+  userId       String
+  user         User      @relation("UserComplaints", fields: [userId], references: [id])
+  
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  
+  statusHistory StatusHistory[]
+  adminNotes    AdminNote[]
+  bookmarks     Bookmark[]
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model StatusHistory {
+  id          String    @id @default(cuid())
+  status      String
+  note        String?
+  
+  complaintId String
+  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  
+  changedById String
+  changedBy   User      @relation("ChangedBy", fields: [changedById], references: [id])
+  
+  createdAt   DateTime  @default(now())
+}
+
+model AdminNote {
+  id          String    @id @default(cuid())
+  note        String
+  
+  complaintId String
+  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  title     String
+  message   String
+  isRead    Boolean   @default(false)
+  type      String    @default("info") // info | success | warning
+  
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime  @default(now())
+}
+
+model Bookmark {
+  id          String    @id @default(cuid())
+  
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  
+  complaintId String
+  complaint   Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, complaintId])
+}
