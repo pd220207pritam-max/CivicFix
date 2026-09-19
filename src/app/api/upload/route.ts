@@ -29,22 +29,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File size must be less than 10MB' }, { status: 400 })
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    // Forward to tmpfiles.org for serverless compatibility
+    const uploadResponse = await fetch('https://tmpfiles.org/api/v1/upload', {
+      method: 'POST',
+      body: formData
+    })
 
-    // Create upload directory
-    const uploadDir = join(process.cwd(), 'public', 'uploads')
-    await mkdir(uploadDir, { recursive: true })
+    if (!uploadResponse.ok) {
+      throw new Error('Failed to upload image to third-party service')
+    }
 
-    // Generate unique filename
-    const ext = file.name.split('.').pop() || 'jpg'
-    const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-    const filepath = join(uploadDir, filename)
+    const data = await uploadResponse.json()
+    // Convert https://tmpfiles.org/12345/image.png to https://tmpfiles.org/dl/12345/image.png
+    const url = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/')
 
-    await writeFile(filepath, buffer)
-
-    const url = `/uploads/${filename}`
-    return NextResponse.json({ url, filename })
+    return NextResponse.json({ url, filename: file.name })
   } catch (error) {
     console.error('Upload error:', error)
     return NextResponse.json({ error: 'Upload failed. Please try again.' }, { status: 500 })
