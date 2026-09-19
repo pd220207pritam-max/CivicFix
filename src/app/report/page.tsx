@@ -145,7 +145,6 @@ export default function ReportPage() {
     const e: Record<string, string> = {}
     if (!form.title.trim()) e.title = 'Issue title is required'
     if (!form.description.trim()) e.description = 'Description is required'
-    if (form.description.length < 10) e.description = 'Please provide a more detailed description'
     if (!form.category) e.category = 'Please select a category'
     if (!location) e.location = 'Please select a location on the map'
     return e
