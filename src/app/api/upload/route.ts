@@ -29,19 +29,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File size must be less than 10MB' }, { status: 400 })
     }
 
-    // Forward to tmpfiles.org for serverless compatibility
-    const uploadResponse = await fetch('https://tmpfiles.org/api/v1/upload', {
+    // Forward to catbox.moe for serverless compatibility
+    const catboxForm = new FormData()
+    catboxForm.append('reqtype', 'fileupload')
+    catboxForm.append('fileToUpload', file)
+
+    const uploadResponse = await fetch('https://catbox.moe/user/api.php', {
       method: 'POST',
-      body: formData
+      body: catboxForm
     })
 
     if (!uploadResponse.ok) {
       throw new Error('Failed to upload image to third-party service')
     }
 
-    const data = await uploadResponse.json()
-    // Convert https://tmpfiles.org/12345/image.png to https://tmpfiles.org/dl/12345/image.png
-    const url = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/')
+    const url = await uploadResponse.text()
 
     return NextResponse.json({ url, filename: file.name })
   } catch (error) {

@@ -77,32 +77,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    // Check for duplicate nearby complaints
-    const nearbyRadius = 0.01 // ~1km
-    const nearby = await prisma.complaint.findFirst({
-      where: {
-        category,
-        latitude: { gte: latitude - nearbyRadius, lte: latitude + nearbyRadius },
-        longitude: { gte: longitude - nearbyRadius, lte: longitude + nearbyRadius },
-        status: { notIn: ['Resolved', 'Rejected'] },
-        createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
-      },
-      include: {
-        user: { select: { name: true } },
-      },
-    })
-
-    if (nearby && body.checkDuplicate !== false) {
-      return NextResponse.json({
-        duplicate: true,
-        existing: {
-          id: nearby.id,
-          title: nearby.title,
-          status: nearby.status,
-          createdAt: nearby.createdAt,
-        },
-      }, { status: 200 })
-    }
+    // Duplicate check removed to prevent UX confusion during hackathon demo
 
     const complaint = await prisma.complaint.create({
       data: {
