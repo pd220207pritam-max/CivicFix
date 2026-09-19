@@ -20,7 +20,6 @@ const adminLinks = [
     section: 'Management',
     items: [
       { href: '/admin/users', label: 'Users & Activity', icon: Users },
-      { href: '/admin/departments', label: 'Departments', icon: Building2 },
       { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
     ]
   },

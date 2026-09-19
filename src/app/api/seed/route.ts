@@ -42,6 +42,11 @@ const complaintData = [
 
 export async function GET() {
   try {
+    // Clear existing data so we don't end up with 40 or 60 items
+    await prisma.statusHistory.deleteMany();
+    await prisma.complaint.deleteMany();
+    await prisma.notification.deleteMany();
+
     const depts = [];
     for (const dept of departments) {
       const d = await prisma.department.upsert({
@@ -76,10 +81,11 @@ export async function GET() {
       },
     });
 
-    const statusList = ['Submitted', 'Under Review', 'Assigned', 'In Progress', 'Resolved'];
+    const statusList = ['Submitted', 'Under Review', 'Assigned', 'In Progress', 'Resolved', 'Resolved'];
 
     for (let i = 0; i < complaintData.length; i++) {
       const data = complaintData[i];
+      const location = locations[i % locations.length];
       const status = statusList[i % statusList.length];
       const dept = i % 3 === 0 ? depts[i % depts.length] : null;
 
@@ -94,9 +100,9 @@ export async function GET() {
           description: data.description,
           category: data.category,
           status: status,
-          latitude: 19.0760 + latOffset,
-          longitude: 72.8777 + lngOffset,
-          address: 'Mumbai, Maharashtra',
+          latitude: location.lat + latOffset,
+          longitude: location.lng + lngOffset,
+          address: location.address,
           isDemo: true,
           userId: citizen.id,
           departmentId: dept?.id,

@@ -102,9 +102,9 @@ export default function Home() {
           <div className="container" style={{ maxWidth: 1000 }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
               {[
-                { label: 'Total Reports', value: stats?.total || '...', color: 'var(--accent)', bg: 'var(--accent-100)', icon: '📋' },
-                { label: 'Issues Resolved', value: stats?.resolved || '...', color: 'var(--status-resolved)', bg: 'var(--status-resolved-bg)', icon: '✨' },
-                { label: 'Active This Week', value: stats?.thisWeek || '...', color: 'var(--status-progress)', bg: 'var(--status-progress-bg)', icon: '🔥' },
+                { label: 'Total Reports', value: stats?.total ?? '...', color: 'var(--accent)', bg: 'var(--accent-100)', icon: '📋' },
+                { label: 'Issues Resolved', value: stats?.resolved ?? '...', color: 'var(--status-resolved)', bg: 'var(--status-resolved-bg)', icon: '✨' },
+                { label: 'Active This Week', value: stats?.thisWeek ?? '...', color: 'var(--status-progress)', bg: 'var(--status-progress-bg)', icon: '🔥' },
               ].map((stat) => (
                 <div key={stat.label} className="card card-hover" style={{ 
                   padding: '1.25rem 1rem', 
