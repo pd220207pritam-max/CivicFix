@@ -20,7 +20,7 @@
 
 - **Frontend:** Next.js 14 (App Router), React, Tailwind CSS (via custom CSS variables)
 - **Backend:** Next.js Server Actions / API Routes
-- **Database:** Prisma ORM with SQLite (Easily convertible to PostgreSQL)
+- **Database:** Prisma ORM with PostgreSQL
 - **Authentication:** NextAuth.js (Credentials Provider)
 - **Maps:** Leaflet & OpenStreetMap
 
@@ -45,7 +45,7 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 3. **Set up the environment variables**
    Create a `.env` file in the root directory based on `.env.example`:
    ```env
-   DATABASE_URL="file:./dev.db"
+   DATABASE_URL="postgresql://user:password@localhost:5432/civicfix"
    NEXTAUTH_SECRET="your-super-secret-key-change-in-production-min-32-chars"
    NEXTAUTH_URL="http://localhost:3000"
    ```
@@ -72,7 +72,5 @@ The database seed script creates the following demo accounts for testing:
 
 ## 🚀 Deployment
 
-To deploy this project to a platform like Vercel, you must switch the database provider from SQLite to a persistent database like PostgreSQL. 
-1. Open `prisma/schema.prisma` and change `provider = "sqlite"` to `provider = "postgresql"`.
-2. Update your `DATABASE_URL` in production to point to your Postgres instance.
+This project is configured to use PostgreSQL. To deploy to a platform like Vercel, simply set your `DATABASE_URL` in your production environment variables to point to your hosted Postgres instance (e.g., Supabase, Neon, or Vercel Postgres).
 # CivicFix
